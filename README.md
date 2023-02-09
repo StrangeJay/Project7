@@ -28,11 +28,22 @@ In this project you will implement a solution that consists of following compone
 5. **Programming Language:** PHP
 6. **Code Repository:** [GitHub](https://github.com/darey-io/tooling.git)  
 
-On the diagram below you can see a common pattern where several stateless Web Servers share a common database and also access the same files using [Network File Sytem (NFS)](https://en.wikipedia.org/wiki/Network_File_System) as a shared file storage. Even though the NFS server might be located on a completely separate hardware – for Web Servers it look like a local file system from where they can serve the same files.  
+On the diagram below you can see a common pattern where several [stateless Web Servers](https://www.geeksforgeeks.org/what-is-a-stateless-server/) share a common database and also access the same files using [Network File Sytem (NFS)](https://en.wikipedia.org/wiki/Network_File_System) as a shared file storage. Even though the NFS server might be located on a completely separate hardware – for Web Servers it look like a local file system from where they can serve the same files.  
 
-![3-tier](https://user-images.githubusercontent.com/105195327/217787752-e970d3f2-a2d0-4722-8a14-fd028a6bafdf.png)
+![3-tier](https://user-images.githubusercontent.com/105195327/217787752-e970d3f2-a2d0-4722-8a14-fd028a6bafdf.png)   
 
-It is important to know what storage solution is suitable for what use cases, for this – you need to answer the following questions: **what data will be stored?**, **in what format?**, **how would this data be accessed?**, **by whom?**, **from where?**, **how frequently?**, etc. Based on this you will be able to choose the right storage system for your solution.  
+
+It is important to know what storage solution is suitable for what use cases, for this, you need to answer the following questions:  
+
+- **What data will be stored?**  
+- **In what format?**  
+- **How would this data be accessed?**  
+- **By whom?**  
+- **From where?**  
+- **How frequently?**    
+etc. Based on this you will be able to choose the right storage system for your solution.  
+
+
 ---
 # STEP 1 – PREPARE NFS SERVER  
 
@@ -50,7 +61,7 @@ It is important to know what storage solution is suitable for what use cases, fo
 
 
 ---
-# Step 3 — PREPARE THE WEB SERVERS 
+# STEP 3 — PREPARE THE WEB SERVERS 
 
 
 
