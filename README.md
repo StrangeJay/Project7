@@ -46,6 +46,46 @@ etc. Based on this you will be able to choose the right storage system for your 
 
 ---
 # STEP 1 – PREPARE NFS SERVER  
+- Spin up a new EC2 instance with RHEL Linux 8 operating System. 
+Based on your LVM experience from [Project 6](https://github.com/StrangeJay/DevOps_Project6), configure LVM on the server. 
+- Create 3 EBS volumes and attach them to your instance 
+- Check what block services are attached to the server using **lsblk** 
+![lsblk](https://user-images.githubusercontent.com/105195327/223113737-d9ad749d-4a79-4780-abdd-597f54e7088d.png)  
+
+- Confirm that the created blocks recide in the **/dev/** directory. 
+![confirm blocks](https://user-images.githubusercontent.com/105195327/223114493-87636755-bebc-476e-a068-0fe993b1dd00.png)  
+
+- Use the `df -h` command to see all mounts and free space on your server.  
+![check mounts](https://user-images.githubusercontent.com/105195327/223115196-0d83251d-d620-4f44-b3cb-83c71760a2e4.png)  
+
+- Create your partitions, install lvm2, mark each disk as physical volumes to be used by LVM, add all 3PVs to a volume group.  
+
+- Create 3 logical volumes  
+![3 LVS](https://user-images.githubusercontent.com/105195327/223135520-dc57aec2-6cfe-4b9f-8348-2b90b631a22e.png)  
+
+- Instead of formatting the disks as ext4, you will have to format them as xfs. 
+```
+sudo mkfs -t xfs /dev/webdata-vg/apps-lv
+sudo mkfs -t xfs /dev/webdata-vg/logs-lv
+sudo mkfs -t xfs /dev/webdata-vg/opt-lv
+``` 
+![Lvs](https://user-images.githubusercontent.com/105195327/223141000-d8bc4e0e-9954-460f-bc6a-68819b012d05.png)  
+
+- Create a directory /mnt/ with sub directories **apps**, **logs**, **opt** with the following command `sudo mkdir -vp /mnt/{apps,logs,opt}`  
+![mnt dir](https://user-images.githubusercontent.com/105195327/223149215-d4426507-74c9-4a4c-9e34-f0ee7ff327c2.png)  
+
+- Go to the /mnt directory
+
+- Create mount points on /mnt directory for the logical volumes as follow:  
+```
+Mount lv-apps on /mnt/apps – To be used by webservers  
+Mount lv-logs on /mnt/logs – To be used by webserver logs  
+Mount lv-opt on /mnt/opt – To be used by Jenkins server in the next project  
+```
+
+
+
+
 
 
 
