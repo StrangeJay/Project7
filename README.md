@@ -77,13 +77,48 @@ sudo mkfs -t xfs /dev/webdata-vg/opt-lv
 - Go to the /mnt directory
 
 - Create mount points on /mnt directory for the logical volumes as follow:  
+**Mount lv-apps on /mnt/apps** – To be used by webservers    
+**Mount lv-logs on /mnt/logs** – To be used by webserver logs   
+**Mount lv-opt on /mnt/opt** – To be used by Jenkins server in the next project  
+
 ```
-Mount lv-apps on /mnt/apps – To be used by webservers  
-Mount lv-logs on /mnt/logs – To be used by webserver logs  
-Mount lv-opt on /mnt/opt – To be used by Jenkins server in the next project  
+sudo mount /dev/webdata-vg/apps-lv /mnt/apps 
+sudo mount /dev/webdata-vg/apps-lv /mnt/logs 
+sudo mount /dev/webdata-vg/apps-lv /mnt/opt 
 ```
 
+![mount dir](https://user-images.githubusercontent.com/105195327/223395945-c7e07496-fa4f-4f71-8cf3-deceff392c40.png)  
 
+- Install NFS server, configure it to start on reboot and make sure it is up and running.  
+```
+sudo yum -y update
+sudo yum install nfs-utils -y
+sudo systemctl start nfs-server.service
+sudo systemctl enable nfs-server.service
+sudo systemctl status nfs-server.service
+```
+![NFS working](https://user-images.githubusercontent.com/105195327/223396965-35c9340c-ff99-4c27-b0cb-6637614304e9.png)  
+
+- Export the mounts for webservers’ **subnet CIDR** to connect as clients. For simplicity, you will install all three Web Servers inside the same subnet, but in the production set-up, you would probably want to separate each tier inside its own subnet for a higher level of security.
+To check your **subnet cidr** – open your EC2 details in the AWS web console and locate the ‘Networking’ tab and open a Subnet link:  
+
+![subnet id](https://user-images.githubusercontent.com/105195327/223399294-0c6eca93-7a33-4472-aca4-4ddc0a49e558.png)  
+
+![subnet ip4](https://user-images.githubusercontent.com/105195327/223399327-f0e623d2-4456-42a7-9ec4-01315cd793cb.png)  
+
+Make sure we set up permission that will allow our web servers to read, write and execute files on NFS: 
+
+```
+sudo chown -R nobody: /mnt/apps
+sudo chown -R nobody: /mnt/logs
+sudo chown -R nobody: /mnt/opt
+ 
+sudo chmod -R 777 /mnt/apps
+sudo chmod -R 777 /mnt/logs
+sudo chmod -R 777 /mnt/opt
+ 
+sudo systemctl restart nfs-server.service
+```
 
 
 
