@@ -89,6 +89,12 @@ sudo mount /dev/webdata-vg/apps-lv /mnt/opt
 
 ![mount dir](https://user-images.githubusercontent.com/105195327/223395945-c7e07496-fa4f-4f71-8cf3-deceff392c40.png)  
 
+- Update /etc/fstab in this format using your own UUID and remember to remove the leading and ending quotes.  
+![update fstab](https://user-images.githubusercontent.com/105195327/223408770-9097288e-2a45-4c83-8fe4-41c3791a5453.png)  
+
+- Verify your setup by running `df -h`  
+![verify mount](https://user-images.githubusercontent.com/105195327/223409357-d70423fd-880d-425b-a631-323617ecf132.png)  
+
 - Install NFS server, configure it to start on reboot and make sure it is up and running.  
 ```
 sudo yum -y update
@@ -118,6 +124,19 @@ sudo chmod -R 777 /mnt/logs
 sudo chmod -R 777 /mnt/opt
  
 sudo systemctl restart nfs-server.service
+```
+- Configure access to NFS for clients within the same subnet (example of Subnet CIDR – **172.31.32.0/20** ):
+
+```
+sudo vi /etc/exports
+ 
+/mnt/apps <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+/mnt/logs <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+/mnt/opt <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+ 
+Esc + :wq!
+ 
+sudo exportfs -arv
 ```
 
 
